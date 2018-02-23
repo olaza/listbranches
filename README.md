@@ -8,8 +8,6 @@ A tool to help you get a quick overview of all your local repos.
 npm i -g https://github.com/mkartchner994/listbranches.git
 ```
 
-### listbranches command
-
 This will install the command `listbranches` to your path.
 
 ### .listbranchesrc.json
