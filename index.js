@@ -64,7 +64,7 @@ function listBranches() {
     }
 
     let table = new Table();
-    table.push(["Key", "Reop", "Branch", "Behind", "Ahead"]);
+    table.push(["Key", "Repo", "Branch", "Behind", "Ahead"]);
 
     for (const [index, repoName] of repoNames.entries()) {
       const repoPath = repos[repoName];
