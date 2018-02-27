@@ -79,7 +79,7 @@ function listBranches() {
       );
       table.push([
         index,
-        blue(repoName.toUpperCase()),
+        blue(repoName),
         magenta(branchName),
         red(commitsBehind),
         green(commitsAhead)
@@ -107,7 +107,7 @@ function listBranches() {
           if (repoNameToCopy) {
             const repoPath = repos[repoNameToCopy];
             ncp.copy(repoPath, function() {
-              console.log(`${repoNameToCopy.toUpperCase()} Copied`);
+              console.log(`${repoNameToCopy} Copied`);
             });
           } else {
             console.log("Not a valid key. Try again.");
