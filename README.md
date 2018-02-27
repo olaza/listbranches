@@ -35,3 +35,19 @@ Running the `listbranches`command will give you an output for all of your repos 
 If you want to get a more update-to-date view for the `Behind` and `Ahead` commit numbers, run `listbranches` with the `--fetch` or `-f` flag. This will run a `git fetch` on all the repos before returning the data table.
 
 The `listbranches` command also gives you the option of entering in a corresponding key from the table to copy the path to the repo - `Input the 'Key' and hit enter to copy the path of the repo.` You can `<Enter>` with an empty value or `<Ctl-C>` to exit.
+
+### Contributing
+
+To contribute, fork the main project and checkout your forked version. Create a new branch with your changes and push it to your fork.
+
+Override the `listbranches` command to point to your forked version. `cd` into your forked repo's directory, then run:
+
+`npm link`
+
+Test your changes. If everything works, create a pull request from your forked branch back to my master branch on Github.
+
+If your pull request gets merged, you can then reinstall from this package to get the latest updates.
+
+```
+npm i -g https://github.com/mkartchner994/listbranches.git
+```
