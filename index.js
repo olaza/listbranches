@@ -39,12 +39,18 @@ function listBranches() {
     });
 
     if (args["--help"] || args["-h"]) {
-      console.log(`\nusage: listbranches  [--help | -h] [--fetch | -f]\n`);
+      console.log(
+        `\nusage: listbranches  [--help | -h] [--fetch | -f] [--key | -k]\n`
+      );
       let helpTable = new Table();
       helpTable.push(["--help, -h", " Shows this help menu."]);
       helpTable.push([
         "--fetch, -f",
         " Calls `git fetch` for all the repos\n before showing the data table.\n Useful for getting more\n accurate `Behind` and `Ahead`\n commit numbers."
+      ]);
+      helpTable.push([
+        "--key, -k",
+        " Allows you to copy the path of the repo\n with the Key value from the data table.\n Useful for quickly opening a new terminal\n window and `cd`ing into the repo's\n directory."
       ]);
       console.log(helpTable.toString());
       return;
@@ -82,33 +88,37 @@ function listBranches() {
 
     console.log(`${table.toString()}\n`);
 
-    // After we have output the branch info, let see
-    // if we want to copy any of the repo info.
-    console.log("Input the `Key` and hit enter to copy the path of the repo.");
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
-    // On the `<Enter>`, or `<Return>` key.
-    rl.on("line", input => {
-      if (!input) {
-        rl.close();
-      } else {
-        const repoNameToCopy = repoNames[input];
-        if (repoNameToCopy) {
-          const repoPath = repos[repoNameToCopy];
-          ncp.copy(repoPath, function() {
-            console.log(`${repoNameToCopy.toUpperCase()} Copied`);
-          });
+    if (args["--key"] || args["-k"]) {
+      // After we have output the branch info, let see
+      // if we want to copy any of the repo info.
+      console.log(
+        "Input the `Key` and hit enter to copy the path of the repo."
+      );
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      });
+      // On the `<Enter>`, or `<Return>` key.
+      rl.on("line", input => {
+        if (!input) {
+          rl.close();
         } else {
-          console.log("Not a valid key. Try again.");
+          const repoNameToCopy = repoNames[input];
+          if (repoNameToCopy) {
+            const repoPath = repos[repoNameToCopy];
+            ncp.copy(repoPath, function() {
+              console.log(`${repoNameToCopy.toUpperCase()} Copied`);
+            });
+          } else {
+            console.log("Not a valid key. Try again.");
+          }
         }
-      }
-    });
-    // Let ourselves know we are done.
-    rl.on("close", () => {
-      console.log(cyan(`DONE!\n`));
-    });
+      });
+      // Let ourselves know we are done.
+      rl.on("close", () => {
+        console.log(cyan(`DONE!\n`));
+      });
+    }
   });
 }
 

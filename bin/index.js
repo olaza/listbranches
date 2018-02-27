@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict';
+"use strict";
 
-const listBranches = require('../index');
+const listBranches = require("../index");
 listBranches();
