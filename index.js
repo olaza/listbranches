@@ -119,10 +119,61 @@ function listBranches() {
         console.log(cyan(`DONE!\n`));
       });
     }
+
+    if (args["--pull"] || args["-p"]) {
+      // After we have output the branch info, let see
+      // if we want to copy any of the repo info.
+
+      const message = "Input the `Key` and hit enter to pull changes to the repo.";
+
+      console.log(message);
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      });
+      // On the `<Enter>`, or `<Return>` key.
+      rl.on("line", async input => {
+        if (!input) {
+          rl.close();
+        } else {
+          const repoNameToCopy = repoNames[input];
+          if (repoNameToCopy) {
+            const repoPath = repos[repoNameToCopy];
+
+            console.log(`Pulling into '${repoNameToCopy}' repo...\n`);
+
+            const pullInfo = await gitPull(repoPath);
+            
+            console.log(`Response: ${pullInfo}\n`);
+            console.log(message);
+            
+          } else {
+            console.log("Not a valid key. Try again.");
+          }
+        }
+      });
+      // Let ourselves know we are done.
+      rl.on("close", () => {
+        console.log(cyan(`DONE!\n`));
+      });
+    }
   });
 }
 
 /*---------- Helper Methods ----------*/
+
+async function gitPull(path) {
+  return await execPromise(
+    `git -C ${escapeShellArg(path)} pull`
+  )
+  .then(({ stdout, stderr }) => {
+    return stdout.trim();
+  })
+  .catch(e => {
+    // Probably cant find it on origin
+    return stderr.trim();
+  });
+}
 
 function getRepoInfo(repoPath) {
   return new Promise(async (resolve, reject) => {
